@@ -1,0 +1,45 @@
+package com.practice.spring_boot_app.javatpoint.service;
+
+import com.practice.spring_boot_app.javatpoint.bean.User;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Component
+public class UserDAOService {
+
+    public static int usersCount = 5;
+    //creating an instance of ArrayList
+    private static List<User> users = new ArrayList<>();
+
+    //static block
+    static {
+//adding users to the list
+        users.add(new User(1, "John", new Date()));
+        users.add(new User(2, "Robert", new Date()));
+        users.add(new User(3, "Adam", new Date()));
+        users.add(new User(4, "Andrew", new Date()));
+        users.add(new User(5, "Jack", new Date()));
+    }
+
+    public List<User> findAll() {
+        return this.users;
+    }
+
+    public User save(User user) {
+        if (user.getId() == null) {
+            user.setId(++usersCount);
+        }
+        this.users.add(user);
+        return user;
+    }
+
+
+    public User findOne(int id) {
+        return this.users.stream().filter(user -> user.getId() == id).findFirst().orElse(new User(-1, "User not exists", null));
+    }
+
+
+}
