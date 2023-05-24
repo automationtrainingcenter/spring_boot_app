@@ -1,6 +1,7 @@
 package com.practice.spring_boot_app.javatpoint.service;
 
 import com.practice.spring_boot_app.javatpoint.bean.User;
+import com.practice.spring_boot_app.javatpoint.excepitons.UserNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -38,7 +39,17 @@ public class UserDAOService {
 
 
     public User findOne(int id) {
-        return this.users.stream().filter(user -> user.getId() == id).findFirst().orElse(new User(-1, "User not exists", null));
+        return this.users.stream().filter(user -> user.getId() == id).findFirst().orElseThrow(() -> new UserNotFoundException("User not found with id : " + id));
+    }
+
+    public User deleteOne(int id) {
+        for(User user : this.users) {
+            if(user.getId() == id) {
+                this.users.remove(user);
+                return user;
+            }
+        }
+        return null;
     }
 
 
