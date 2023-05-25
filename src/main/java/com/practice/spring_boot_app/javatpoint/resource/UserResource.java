@@ -3,6 +3,7 @@ package com.practice.spring_boot_app.javatpoint.resource;
 import com.practice.spring_boot_app.javatpoint.bean.User;
 import com.practice.spring_boot_app.javatpoint.excepitons.UserNotFoundException;
 import com.practice.spring_boot_app.javatpoint.service.UserDAOService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class UserResource {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<Object> createUser(@RequestBody User user) {
+    public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
         User savedUser = this.userService.save(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId()).toUri();
         return ResponseEntity.created(uri).build();
